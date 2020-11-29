@@ -1,6 +1,22 @@
 # trashtroopers
 
-A new Flutter application.
+A new Flutter application that allows users to file complaints on littered waste directly to the officials.
+
+## Components
+# Authenticate:
+Here we have dart files for checking authentication, register and sign-in
+
+# models:
+The folder contains dart files that specifies the attributes of the user (also used to define documents in fire base)
+
+# Services:
+The folder contains dart files for basic database operations for update,create and authenticate.
+
+# Home:
+The dart files present in the folder represent the pages in the application
+
+# Shared:
+These are common files used when a page loads and specific styles
 
 ## Getting Started
 
