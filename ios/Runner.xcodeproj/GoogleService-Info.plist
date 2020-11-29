@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1004505445261-57mq772718u7onvuf8ohos8v50insace.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1004505445261-57mq772718u7onvuf8ohos8v50insace</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1004505445261-02vfdrfv64qbk4qnjidg8n4ro2fn9q7d.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCY-pTuFm9_30kv2driXJ2ApPGTs5d4Thk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1004505445261</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.rsharshini.trashtroopers</string>
+	<key>PROJECT_ID</key>
+	<string>trashtroopers-e6330</string>
+	<key>STORAGE_BUCKET</key>
+	<string>trashtroopers-e6330.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1004505445261:ios:59a8558996fc134b9343c4</string>
+	<key>DATABASE_URL</key>
+	<string>https://trashtroopers-e6330.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1004505445261",
+    "firebase_url": "https://trashtroopers-e6330.firebaseio.com",
+    "project_id": "trashtroopers-e6330",
+    "storage_bucket": "trashtroopers-e6330.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004505445261:android:e65d1f43e38350149343c4",
+        "android_client_info": {
+          "package_name": "com.rsharshini.trashtroopers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004505445261-02vfdrfv64qbk4qnjidg8n4ro2fn9q7d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rsharshini.trashtroopers",
+            "certificate_hash": "9ee3901fb6581126d0823d42c91e456564f196d0"
+          }
+        },
+        {
+          "client_id": "1004505445261-c7v0usn1ia29vsunhr8mhpi1m8nbjg84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHMdAUTna7Q3ZUHcecdE-5FvJjk6BjBaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004505445261-c7v0usn1ia29vsunhr8mhpi1m8nbjg84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
