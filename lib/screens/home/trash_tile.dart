@@ -6,7 +6,17 @@ class trashTile extends StatelessWidget {
   trashTile({this.tr});
 
   CircleAvatar status() {
-    if (tr.file.isNotEmpty) {
+    if (tr.complete == 'true') {
+      return CircleAvatar(
+        radius: 70.0,
+        backgroundColor: Colors.lightGreenAccent,
+        child: Icon(
+          Icons.check_circle,
+          color: Colors.lightGreen,
+          size: 50.0,
+        ),
+      );
+    } else if (tr.file.isNotEmpty) {
       return CircleAvatar(
         radius: 50.0,
         backgroundColor: Colors.brown,
@@ -14,7 +24,7 @@ class trashTile extends StatelessWidget {
       );
     } else {
       return CircleAvatar(
-        radius: 25.0,
+        radius: 50.0,
         backgroundColor: Colors.brown,
         backgroundImage: AssetImage('assets/images/avatar.jpg'),
       );
@@ -29,8 +39,8 @@ class trashTile extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
           leading: status(),
-          title: Text(tr.location),
-          subtitle: Text(tr.complaint),
+          title: Text(tr.complaint),
+          subtitle: Text(tr.location),
         ),
       ),
     );

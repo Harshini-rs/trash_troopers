@@ -10,7 +10,6 @@ import 'package:characters/characters.dart';
 import 'package:trashtroopers/shared/loading.dart';
 import 'package:path/path.dart' as Path;
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart';
 
 class settingsForm extends StatefulWidget {
   @override
@@ -19,11 +18,13 @@ class settingsForm extends StatefulWidget {
 
 class _settingsFormState extends State<settingsForm> {
   final _formKey = GlobalKey<FormState>();
-  Coordinates _currentPosition;
   String _name, _location, _complaint;
   var _file, first, addresses;
+  Position _currentPosition;
+  static String _currentAddress;
   File _image;
   final picker = ImagePicker();
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -35,18 +36,36 @@ class _settingsFormState extends State<settingsForm> {
     uploadFile();
   }
 
-  void getloc() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    _currentPosition = new Coordinates(position.latitude, position.longitude);
+  Future getloc() async {
+    //LocationPermission permission = await geolocator.requestPermission();
+    await geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+      _getAddressFromLatLng();
+      print(_currentPosition);
+    }).catchError((e) {
+      print(e);
+    });
   }
 
-  _getAddressFromLatLng() async {
-    addresses =
-        await Geocoder.local.findAddressesFromCoordinates(_currentPosition);
-    first = addresses.first;
-    print("${first.featureName} : ${first.addressLine}");
+  Future _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+      print(_currentAddress);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Widget enableUpload() {
@@ -77,7 +96,6 @@ class _settingsFormState extends State<settingsForm> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
     return StreamBuilder<UserData>(
       stream: Dbservice(uid: user.uid).userData,
       builder: (context, snapshot) {
@@ -111,16 +129,40 @@ class _settingsFormState extends State<settingsForm> {
                 SizedBox(
                   height: 20.0,
                 ),
+                RaisedButton(
+                  child: Text('Get Location',
+                      style: TextStyle(color: Colors.white)),
+                  color: Colors.pink[400],
+                  onPressed: () async {
+                    await getloc();
+                  },
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Text(_currentAddress ?? 'Press button to get your location'),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Text(
                   'Enter Location:',
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
                 ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                //Text(_currentAddress),
                 TextFormField(
-                  initialValue: userData.location,
+                  initialValue: _currentAddress ??
+                      'Do not fill in if the automatic location is correct!!!',
                   decoration: textDecoration,
-                  onChanged: (val) => setState(() => _location = val),
+                  onChanged: (val) {
+                    setState(() {
+                      _location = val;
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 20.0,
@@ -146,7 +188,6 @@ class _settingsFormState extends State<settingsForm> {
                   onPressed: () {
                     setState(() {
                       getImage();
-                      getloc();
                     });
                   },
                   tooltip: 'Pick Image',
@@ -154,19 +195,22 @@ class _settingsFormState extends State<settingsForm> {
                 ),
                 RaisedButton(
                   onPressed: () async {
+                    //print(_currentAddress);
                     if (_formKey.currentState.validate()) {
                       await Dbservice(uid: user.uid).updateUserdata(
+                        user.uid,
                         _name ?? userData.name,
-                        _location ?? first,
+                        _location ?? _currentAddress,
                         _complaint ?? userData.complaint,
                         await _file ?? userData.file,
+                        'false',
                       );
                       Navigator.pop(context);
                     }
                   },
                   color: Colors.pink[400],
                   child: Text('Update', style: TextStyle(color: Colors.white)),
-                )
+                ),
               ],
             ),
           );

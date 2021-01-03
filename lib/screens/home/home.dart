@@ -9,6 +9,7 @@ import 'package:trashtroopers/models/trash.dart';
 import 'trash_list.dart';
 
 class home extends StatelessWidget {
+  //final dynamic result;
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {

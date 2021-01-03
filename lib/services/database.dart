@@ -17,24 +17,32 @@ class Dbservice {
       Firestore.instance.collection('trash');
 
   //Add File image
-  Future updateUserdata(
-      String name, String location, String complaint, String file) async {
+  Future updateUserdata(String uid, String name, String location,
+      String complaint, String file, String complete) async {
     return await ttcollection.document(uid).setData({
+      'uid': uid,
       'name': name,
       'location': location,
       'complaint': complaint,
       'file': file,
+      'complete': complete,
     });
+  }
+
+  Future updateUserdata_a(String complete) async {
+    return await ttcollection.document(uid).updateData({'complete': complete});
   }
 
   //Add FIle image
   List<trash> _trashlistFromSnap(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
       return trash(
+        uid: doc.data['uid'],
         name: doc.data['name'] ?? '',
         location: doc.data['location'] ?? '',
         complaint: doc.data['complaint'] ?? '',
         file: doc.data['file'] ?? '',
+        complete: doc.data['complete'] ?? '',
       );
     }).toList();
   }
@@ -42,9 +50,11 @@ class Dbservice {
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
       uid: uid,
+      admin: snapshot.data['admin'],
       name: snapshot.data['name'],
       location: snapshot.data['location'],
       complaint: snapshot.data['complaint'],
+      complete: snapshot.data['complete'],
     );
   }
 

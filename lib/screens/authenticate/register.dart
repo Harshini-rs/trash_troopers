@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+//import 'package:trashtroopers/models/Admin.dart';
+import 'package:trashtroopers/screens/home/adminpage.dart';
 import 'package:trashtroopers/services/auth.dart';
 import 'package:trashtroopers/screens/authenticate/authenticate.dart';
 import 'package:trashtroopers/shared/constant.dart';
@@ -99,7 +101,9 @@ class _registerState extends State<register> {
                                 error =
                                     'Please enter a valid email or password';
                               });
-                            }
+                            } //else if (result is Admin) {
+                            //adminpage();
+                            //}
                           }
                         },
                       ),

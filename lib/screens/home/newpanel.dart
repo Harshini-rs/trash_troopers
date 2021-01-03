@@ -8,6 +8,7 @@ import 'package:trashtroopers/services/database.dart';
 import 'package:trashtroopers/shared/constant.dart';
 import 'package:trashtroopers/shared/loading.dart';
 import 'package:path/path.dart' as Path;
+import 'package:geolocator/geolocator.dart';
 
 class NewPanel extends StatefulWidget {
   @override
@@ -19,6 +20,9 @@ class _NewPanelState extends State<NewPanel> {
   String _name, _location, _complaint, _file;
   File _image;
   final picker = ImagePicker();
+  Position _currentPosition;
+  String _currentAddress;
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -48,6 +52,38 @@ class _NewPanelState extends State<NewPanel> {
     await uploadTask.onComplete;
     print('File Uploaded');
     _file = await storageReference.getDownloadURL();
+  }
+
+  Future getloc() async {
+    //LocationPermission permission = await geolocator.requestPermission();
+    await geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+        .then((Position position) {
+      setState(() {
+        _currentPosition = position;
+      });
+      _getAddressFromLatLng();
+      print(_currentPosition);
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  Future _getAddressFromLatLng() async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+      print(_currentAddress);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -85,6 +121,20 @@ class _NewPanelState extends State<NewPanel> {
           SizedBox(
             height: 20.0,
           ),
+          RaisedButton(
+            child: Text('Get Location', style: TextStyle(color: Colors.white)),
+            color: Colors.pink[400],
+            onPressed: () async {
+              await getloc();
+            },
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Text(_currentAddress ?? 'Press button to get your location'),
+          SizedBox(
+            height: 20.0,
+          ),
           Text(
             'Enter Location:',
             style: TextStyle(
@@ -93,8 +143,10 @@ class _NewPanelState extends State<NewPanel> {
           ),
           TextFormField(
             decoration: textDecoration,
-            validator: (val) =>
-                val.isEmpty ? "Please enter your location" : null,
+            initialValue: _currentAddress ??
+                'Do not fill in if the automatic location is correct!!!',
+            //validator: (val) =>
+            //    val.isEmpty ? "Please enter your location" : _currentAddress,
             onChanged: (val) => setState(() => _location = val),
           ),
           SizedBox(
@@ -128,10 +180,13 @@ class _NewPanelState extends State<NewPanel> {
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 await Dbservice(uid: user.uid).updateUserdata(
-                    _name ?? 'New user',
-                    _location ?? 'Current location',
-                    _complaint ?? 'New complaint',
-                    _file ?? 'assets/images/avatar.jpg');
+                  user.uid,
+                  _name ?? 'New user',
+                  _location ?? _currentAddress,
+                  _complaint ?? 'New complaint',
+                  _file ?? 'assets/images/avatar.jpg',
+                  'false',
+                );
                 Navigator.pop(context);
               }
             },

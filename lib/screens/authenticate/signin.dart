@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+//import 'package:trashtroopers/models/admin.dart';
 import 'package:trashtroopers/screens/authenticate/register.dart';
 import 'package:trashtroopers/services/auth.dart';
 import 'package:trashtroopers/shared/constant.dart';
 import 'package:trashtroopers/shared/loading.dart';
+import 'package:trashtroopers/screens/home/adminpage.dart';
 
 class signin extends StatefulWidget {
   final Function toggleview;
@@ -101,7 +103,7 @@ class _signinState extends State<signin> {
                       height: 18.0,
                       child: Text(
                         error,
-                        style: TextStyle(color: Colors.red, fontSize: 14.0),
+                        style: TextStyle(color: Colors.white, fontSize: 14.0),
                       ),
                     ),
                   ],
